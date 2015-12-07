@@ -1,10 +1,12 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+ctx.fillStyle = "white";
+ctx.strokeStyle = "black";
+
 //var leftBarXPos = 10;
 var leftBarYPos = 130;
 //var rightBarXPos = 460;
 var rightBarYPos = 130;
-ctx.fillStyle = "white";
 
 var leftReachedTop = false; 
 var leftReachedBottom = false;
@@ -14,9 +16,24 @@ var rightReachedTop = false;
 var rightReachedBottom = false;
 var rightMoveVal = 0;
 
+var ballXPos = 240;
+var ballYPos = 160;
+var ballRadius = 10;
+var ballUpBound = ballYPos - ballRadius;
+var ballLowBound = ballYPos + ballRadius;
+var ballLeftBound = ballXPos - ballRadius;
+var ballRightBound = ballXPos + ballRadius;
+var ballCollision = false;
+
+var increaseInX = .5;
+var increaseInY = 9;
+
 //width: 480, height: 320
 ctx.fillRect(10, leftBarYPos, 10, 60);
 ctx.fillRect(460, rightBarYPos, 10, 60);
+ctx.arc(ballXPos,ballYPos,ballRadius,0,2*Math.PI);
+ctx.fill();
+ctx.stroke();
 
 
 document.addEventListener('keydown', function(e) {
@@ -42,9 +59,7 @@ document.addEventListener('keydown', function(e) {
             leftMoveVal = 0;
             break;
     }
-//    if (direcS < 2 && tempDirec > 1 || direcS > 1 && tempDirec < 2) {
-//        direcS = tempDirec;
-//  }
+
 }, false);
 
 
@@ -81,8 +96,11 @@ document.addEventListener('keyup', function(e) {
 
 setInterval(function(){
     
-    //left bar
-    if(!leftReachedTop && leftMoveVal == 1)
+    ballLowBound = ballYPos + ballRadius;
+    ballUpBound = ballYPos - ballRadius;
+    
+    //left bar move UP
+    if(!leftReachedTop && leftMoveVal == 1) //TODO: Fix white strokes
     {
         leftReachedBottom = false;
         ctx.fillStyle = "black";
@@ -96,6 +114,7 @@ setInterval(function(){
         }
     }
     
+    //left bar move DOWN
     else if(!leftReachedBottom && leftMoveVal == -1)
     {
         leftReachedTop = false;
@@ -112,35 +131,117 @@ setInterval(function(){
     
     
     
-    //right bar
-    if(!rightReachedTop && rightMoveVal == 1)
+    //right bar move UP
+    if(!rightReachedTop && rightMoveVal == 1) //TODO: Fix white strokes
     {
         rightReachedBottom = false;
         ctx.fillStyle = "black";
+        ctx.strokeStyle = "black";
         ctx.fillRect(460, rightBarYPos, 10, 60);
+        ctx.stroke();
+        
         rightBarYPos -= 4;
         ctx.fillStyle = "white";
         ctx.fillRect(460, rightBarYPos, 10, 60);
+        ctx.stroke();
         if(rightBarYPos < 0)
         {
             rightReachedTop = true;
         }
     }
     
-    else if(!rightReachedBottom && rightMoveVal == -1)
+    //right bar move DOWN
+    else if(!rightReachedBottom && rightMoveVal == -1) 
     {
         rightReachedTop = false;
         ctx.fillStyle = "black";
+        ctx.strokeStyle = "black";
         ctx.fillRect(460, rightBarYPos, 10, 60);
+        ctx.stroke();
+        
         rightBarYPos += 4;
         ctx.fillStyle = "white";
         ctx.fillRect(460, rightBarYPos, 10, 60);
+        ctx.stroke();
         if(rightBarYPos > canvas.height - 60)
         {
             rightReachedBottom = true;
         }
     }
     
+    //move ball
+    if(!ballCollision){
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "black";
+        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+        
+
+        ctx.beginPath();
+        ballXPos += increaseInX;
+        ballYPos += increaseInY;
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+    }
+    
+    //collision TOP/BOTOOM
+    if(ballUpBound <= 0 || ballLowBound >= canvas.height)
+    {
+        //ballCollision = true;
+        
+        //window.alert("Yo");
+        
+//        ctx.beginPath();
+//        ctx.fillStyle = "black";
+//        ctx.strokeStyle = "black";
+//        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
+//        ctx.fill();
+//        ctx.stroke();
+//        ctx.closePath();
+        
+        increaseInY = -increaseInY;
+        if(ballUpBound <= 0)
+            ballYPos = 0 + ballRadius + 1;
+        else if(ballLowBound >= 320)
+            ballYPos = canvas.height - ballRadius - 1; 
+        
+//        ballXPos = 240;
+//        ballYPos = 160;
+        
+//        ctx.beginPath();
+//        ctx.fillStyle = "white";
+//        ctx.strokeStyle = "black";
+//        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
+//        ctx.fill();
+//        ctx.stroke();
+//        ctx.closePath();
+        
+    }
+    
+    //var htmlLow = document.getElementById("ballLowerBound");
+    ballLowerBound.innerHTML = "Ball Low Bound: " + ballLowBound;
+    ballUpperBound.innerHTML = "Ball Upper Bound: " + ballUpBound;
+    
+    //if(ballRightBound > 460  || touched left bar)
+    
     
 }, 30);
    
+
+
+
+
+
+
+
+
+
+
+

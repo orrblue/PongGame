@@ -26,7 +26,7 @@ var ballRightBound = ballXPos + ballRadius;
 var ballCollision = false;
 
 var increaseInX = .5;
-var increaseInY = 9;
+var increaseInY = 5;
 
 //width: 480, height: 320
 ctx.fillRect(10, leftBarYPos, 10, 60);
@@ -198,13 +198,13 @@ setInterval(function(){
         
         //window.alert("Yo");
         
-//        ctx.beginPath();
-//        ctx.fillStyle = "black";
-//        ctx.strokeStyle = "black";
-//        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
-//        ctx.fill();
-//        ctx.stroke();
-//        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "black";
+        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
         
         increaseInY = -increaseInY;
         if(ballUpBound <= 0)
@@ -212,16 +212,14 @@ setInterval(function(){
         else if(ballLowBound >= 320)
             ballYPos = canvas.height - ballRadius - 1; 
         
-//        ballXPos = 240;
-//        ballYPos = 160;
-        
-//        ctx.beginPath();
-//        ctx.fillStyle = "white";
-//        ctx.strokeStyle = "black";
-//        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
-//        ctx.fill();
-//        ctx.stroke();
-//        ctx.closePath();
+        //Redraw white ball in here so there isnt a super short dark out
+        ctx.beginPath();
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
         
     }
     

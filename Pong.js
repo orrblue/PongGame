@@ -8,14 +8,17 @@ var leftBarYPos = 130;
 //var rightBarXPos = 460;
 var rightBarYPos = 130;
 
+//left bar
 var leftReachedTop = false; 
 var leftReachedBottom = false;
 var leftMoveVal = 0;
 
+//right bar
 var rightReachedTop = false; 
 var rightReachedBottom = false;
 var rightMoveVal = 0;
 
+//ball
 var ballXPos = 240;
 var ballYPos = 160;
 var ballRadius = 10;
@@ -25,17 +28,19 @@ var ballLeftBound = ballXPos - ballRadius;
 var ballRightBound = ballXPos + ballRadius;
 var ballCollision = false;
 
+//ball position increments
 var increaseInX = .5;
 var increaseInY = 5;
 
 //width: 480, height: 320
-ctx.fillRect(10, leftBarYPos, 10, 60);
-ctx.fillRect(460, rightBarYPos, 10, 60);
-ctx.arc(ballXPos,ballYPos,ballRadius,0,2*Math.PI);
-ctx.fill();
-ctx.stroke();
+ctx.fillRect(10, leftBarYPos, 10, 60); //left bar
+ctx.fillRect(460, rightBarYPos, 10, 60); //right bar
+ctx.arc(ballXPos,ballYPos,ballRadius,0,2*Math.PI); //ball
+ctx.fill(); //fill inside
+ctx.stroke(); //color the border
 
 
+//bars movement
 document.addEventListener('keydown', function(e) {
     // 'e' short for 'event'
     switch(e.keyCode) {
@@ -59,16 +64,14 @@ document.addEventListener('keydown', function(e) {
             leftMoveVal = 0;
             break;
     }
-
+    
 }, false);
 
 
+//bars stop movement
 document.addEventListener('keyup', function(e) {
     // 'e' short for 'event'
     switch(e.keyCode) {
-//        case 32:
-//            pause = !pause;
-//            break;
         case 38: //up
             rightMoveVal = 0;
             break;
@@ -86,21 +89,19 @@ document.addEventListener('keyup', function(e) {
             leftMoveVal = 0;
             break;
     }
+    
 }, false);
-
-
-
-
 
 
 
 setInterval(function(){
     
+    //update ball bounds
     ballLowBound = ballYPos + ballRadius;
     ballUpBound = ballYPos - ballRadius;
     
     //left bar move UP
-    if(!leftReachedTop && leftMoveVal == 1) //TODO: Fix white strokes
+    if(!leftReachedTop && leftMoveVal == 1) //TODO: Put into own function
     {
         leftReachedBottom = false;
         ctx.fillStyle = "black";
@@ -115,7 +116,7 @@ setInterval(function(){
     }
     
     //left bar move DOWN
-    else if(!leftReachedBottom && leftMoveVal == -1)
+    else if(!leftReachedBottom && leftMoveVal == -1) //TODO: Put into own function
     {
         leftReachedTop = false;
         ctx.fillStyle = "black";
@@ -129,10 +130,8 @@ setInterval(function(){
         }
     }
     
-    
-    
     //right bar move UP
-    if(!rightReachedTop && rightMoveVal == 1) //TODO: Fix white strokes
+    if(!rightReachedTop && rightMoveVal == 1) //TODO: Put into own function
     {
         rightReachedBottom = false;
         ctx.fillStyle = "black";
@@ -151,7 +150,7 @@ setInterval(function(){
     }
     
     //right bar move DOWN
-    else if(!rightReachedBottom && rightMoveVal == -1) 
+    else if(!rightReachedBottom && rightMoveVal == -1)  //TODO: Put into own function
     {
         rightReachedTop = false;
         ctx.fillStyle = "black";
@@ -170,7 +169,7 @@ setInterval(function(){
     }
     
     //move ball
-    if(!ballCollision){
+    if(!ballCollision){ //TODO: Put into own function
         ctx.beginPath();
         ctx.fillStyle = "black";
         ctx.strokeStyle = "black";
@@ -192,7 +191,7 @@ setInterval(function(){
     }
     
     //collision TOP/BOTOOM
-    if(ballUpBound <= 0 || ballLowBound >= canvas.height)
+    if(ballUpBound <= 0 || ballLowBound >= canvas.height) //TODO: Put into own function
     {
         //ballCollision = true;
         
@@ -212,7 +211,7 @@ setInterval(function(){
         else if(ballLowBound >= 320)
             ballYPos = canvas.height - ballRadius - 1; 
         
-        //Redraw white ball in here so there isnt a super short dark out
+        //Redraw white ball so there isnt a super short dark out
         ctx.beginPath();
         ctx.fillStyle = "white";
         ctx.strokeStyle = "black";
@@ -223,11 +222,14 @@ setInterval(function(){
         
     }
     
-    //var htmlLow = document.getElementById("ballLowerBound");
+    //collision RIGHT/LEFT with bars
+    //if(ballRightBound > 460  || touched left bar) //TODO: Make it work + Put into own function
+    
+    
+    //debug info
     ballLowerBound.innerHTML = "Ball Low Bound: " + ballLowBound;
     ballUpperBound.innerHTML = "Ball Upper Bound: " + ballUpBound;
     
-    //if(ballRightBound > 460  || touched left bar)
     
     
 }, 30);

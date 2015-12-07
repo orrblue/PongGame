@@ -6,9 +6,13 @@ var leftBarYPos = 130;
 var rightBarYPos = 130;
 ctx.fillStyle = "white";
 
-var reachedTop = false; 
-var reachedBottom = false;
+var leftReachedTop = false; 
+var leftReachedBottom = false;
 var leftMoveVal = 0;
+
+var rightReachedTop = false; 
+var rightReachedBottom = false;
+var rightMoveVal = 0;
 
 //width: 480, height: 320
 ctx.fillRect(10, leftBarYPos, 10, 60);
@@ -22,20 +26,18 @@ document.addEventListener('keydown', function(e) {
 //            pause = !pause;
 //            break;
         case 38: //up
+            rightMoveVal = 1;
+            break;
         case 87: //w
             leftMoveVal = 1;
             break;
         case 40: //down
+            rightMoveVal = -1;
+            break;
         case 83: //s
             leftMoveVal = -1;
             break;
-//        case 37:
-//        case 65:
-//            leftMoveVal = 2;
-//            break;
-//        case 39:
-//        case 68:
-//            leftMoveVal = 4;
+
         default:
             leftMoveVal = 0;
             break;
@@ -53,20 +55,18 @@ document.addEventListener('keyup', function(e) {
 //            pause = !pause;
 //            break;
         case 38: //up
+            rightMoveVal = 0;
+            break;
         case 87: //w
             leftMoveVal = 0;
             break;
         case 40: //down
+            rightMoveVal = 0;
+            break;
         case 83: //s
             leftMoveVal = 0;
             break;
-//        case 37:
-//        case 65:
-//            leftMoveVal = 2;
-//            break;
-//        case 39:
-//        case 68:
-//            leftMoveVal = 4;
+
         default:
             leftMoveVal = 0;
             break;
@@ -82,9 +82,9 @@ document.addEventListener('keyup', function(e) {
 setInterval(function(){
     
     //left bar
-    if(!reachedTop && leftMoveVal == 1)
+    if(!leftReachedTop && leftMoveVal == 1)
     {
-        reachedBottom = false;
+        leftReachedBottom = false;
         ctx.fillStyle = "black";
         ctx.fillRect(10, leftBarYPos, 10, 60);
         leftBarYPos -= 4;
@@ -92,14 +92,13 @@ setInterval(function(){
         ctx.fillRect(10, leftBarYPos, 10, 60);
         if(leftBarYPos < 0)
         {
-            reachedTop = true;
-            //reachedBottom = false;
+            leftReachedTop = true;
         }
     }
     
-    else if(!reachedBottom && leftMoveVal == -1)
+    else if(!leftReachedBottom && leftMoveVal == -1)
     {
-        reachedTop = false;
+        leftReachedTop = false;
         ctx.fillStyle = "black";
         ctx.fillRect(10, leftBarYPos, 10, 60);
         leftBarYPos += 4;
@@ -107,8 +106,38 @@ setInterval(function(){
         ctx.fillRect(10, leftBarYPos, 10, 60);
         if(leftBarYPos > canvas.height - 60)
         {
-            reachedBottom = true;
-            //reachedTop = false;
+            leftReachedBottom = true;
+        }
+    }
+    
+    
+    
+    //right bar
+    if(!rightReachedTop && rightMoveVal == 1)
+    {
+        rightReachedBottom = false;
+        ctx.fillStyle = "black";
+        ctx.fillRect(460, rightBarYPos, 10, 60);
+        rightBarYPos -= 4;
+        ctx.fillStyle = "white";
+        ctx.fillRect(460, rightBarYPos, 10, 60);
+        if(rightBarYPos < 0)
+        {
+            rightReachedTop = true;
+        }
+    }
+    
+    else if(!rightReachedBottom && rightMoveVal == -1)
+    {
+        rightReachedTop = false;
+        ctx.fillStyle = "black";
+        ctx.fillRect(460, rightBarYPos, 10, 60);
+        rightBarYPos += 4;
+        ctx.fillStyle = "white";
+        ctx.fillRect(460, rightBarYPos, 10, 60);
+        if(rightBarYPos > canvas.height - 60)
+        {
+            rightReachedBottom = true;
         }
     }
     

@@ -30,7 +30,7 @@ var ballCollision = false;
 
 //ball position increments
 var increaseInX = .5;
-var increaseInY = 5;
+var increaseInY = 10;
 
 //width: 480, height: 320
 ctx.fillRect(10, leftBarYPos, 10, 60); //left bar
@@ -101,97 +101,37 @@ setInterval(function(){
     ballUpBound = ballYPos - ballRadius;
     
     //left bar move UP
-    if(!leftReachedTop && leftMoveVal == 1) //TODO: Put into own function
+    if(!leftReachedTop && leftMoveVal == 1)
     {
-        leftReachedBottom = false;
-        ctx.fillStyle = "black";
-        ctx.fillRect(10, leftBarYPos, 10, 60);
-        leftBarYPos -= 4;
-        ctx.fillStyle = "white";
-        ctx.fillRect(10, leftBarYPos, 10, 60);
-        if(leftBarYPos < 0)
-        {
-            leftReachedTop = true;
-        }
+        moveLeftBarUp();
     }
     
     //left bar move DOWN
-    else if(!leftReachedBottom && leftMoveVal == -1) //TODO: Put into own function
+    else if(!leftReachedBottom && leftMoveVal == -1)
     {
-        leftReachedTop = false;
-        ctx.fillStyle = "black";
-        ctx.fillRect(10, leftBarYPos, 10, 60);
-        leftBarYPos += 4;
-        ctx.fillStyle = "white";
-        ctx.fillRect(10, leftBarYPos, 10, 60);
-        if(leftBarYPos > canvas.height - 60)
-        {
-            leftReachedBottom = true;
-        }
+        moveLeftBarDown();
     }
     
     //right bar move UP
-    if(!rightReachedTop && rightMoveVal == 1) //TODO: Put into own function
+    if(!rightReachedTop && rightMoveVal == 1)
     {
-        rightReachedBottom = false;
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
-        ctx.fillRect(460, rightBarYPos, 10, 60);
-        ctx.stroke();
-        
-        rightBarYPos -= 4;
-        ctx.fillStyle = "white";
-        ctx.fillRect(460, rightBarYPos, 10, 60);
-        ctx.stroke();
-        if(rightBarYPos < 0)
-        {
-            rightReachedTop = true;
-        }
+        moveRightBarUp();
     }
     
     //right bar move DOWN
-    else if(!rightReachedBottom && rightMoveVal == -1)  //TODO: Put into own function
+    else if(!rightReachedBottom && rightMoveVal == -1)
     {
-        rightReachedTop = false;
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
-        ctx.fillRect(460, rightBarYPos, 10, 60);
-        ctx.stroke();
-        
-        rightBarYPos += 4;
-        ctx.fillStyle = "white";
-        ctx.fillRect(460, rightBarYPos, 10, 60);
-        ctx.stroke();
-        if(rightBarYPos > canvas.height - 60)
-        {
-            rightReachedBottom = true;
-        }
+        moveRightBarDown();
     }
     
     //move ball
-    if(!ballCollision){ //TODO: Put into own function
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
-        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
-        ctx.fill();
-        ctx.stroke();
-        ctx.closePath();
-        
-
-        ctx.beginPath();
-        ballXPos += increaseInX;
-        ballYPos += increaseInY;
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "black";
-        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
-        ctx.fill();
-        ctx.stroke();
-        ctx.closePath();
+    if(!ballCollision)
+    {
+        moveBall();
     }
     
     //collision TOP/BOTOOM
-    if(ballUpBound <= 0 || ballLowBound >= canvas.height) //TODO: Put into own function
+    if(ballUpBound <= 0 || ballLowBound >= canvas.height) //TODO: Cases for which part of the ball collides so it applies to all sides.
     {
         //ballCollision = true;
         
@@ -233,6 +173,116 @@ setInterval(function(){
     
     
 }, 30);
+
+
+
+
+
+
+function moveLeftBarUp()
+{
+    leftReachedBottom = false;
+    ctx.fillStyle = "black";
+    ctx.fillRect(10, leftBarYPos, 10, 60);
+    leftBarYPos -= 4;
+    ctx.fillStyle = "white";
+    ctx.fillRect(10, leftBarYPos, 10, 60);
+    if(leftBarYPos < 0)
+    {
+        leftReachedTop = true;
+    }
+}
+
+
+
+
+
+
+function moveLeftBarDown()
+{
+    leftReachedTop = false;
+    ctx.fillStyle = "black";
+    ctx.fillRect(10, leftBarYPos, 10, 60);
+    leftBarYPos += 4;
+    ctx.fillStyle = "white";
+    ctx.fillRect(10, leftBarYPos, 10, 60);
+    if(leftBarYPos > canvas.height - 60)
+    {
+        leftReachedBottom = true;
+    }
+}
+
+
+
+
+
+
+function moveRightBarUp()
+{
+    rightReachedBottom = false;
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "black";
+    ctx.fillRect(460, rightBarYPos, 10, 60);
+    ctx.stroke();
+        
+    rightBarYPos -= 4;
+    ctx.fillStyle = "white";
+    ctx.fillRect(460, rightBarYPos, 10, 60);
+    ctx.stroke();
+    if(rightBarYPos < 0)
+    {
+        rightReachedTop = true;
+    }
+}
+
+
+
+
+
+
+function moveRightBarDown()
+{
+    rightReachedTop = false;
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "black";
+    ctx.fillRect(460, rightBarYPos, 10, 60);
+    ctx.stroke();
+        
+    rightBarYPos += 4;
+    ctx.fillStyle = "white";
+    ctx.fillRect(460, rightBarYPos, 10, 60);
+    ctx.stroke();
+    if(rightBarYPos > canvas.height - 60)
+    {
+        rightReachedBottom = true;
+    }  
+}
+
+
+
+
+
+
+function moveBall()
+{
+    ctx.beginPath();
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "black";
+    ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();    
+
+    ctx.beginPath();
+    ballXPos += increaseInX;
+    ballYPos += increaseInY;
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "black";
+    ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+}
    
 
 

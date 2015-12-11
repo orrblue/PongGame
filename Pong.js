@@ -35,7 +35,7 @@ var ballRightBound = ballXPos + ballRadius;
 var ballCollision = false;
 
 //ball position increments
-var ballIncreaseInX = -3;
+var ballIncreaseInX = 0;
 var ballIncreaseInY = 3;
 
 //width: 480, height: 320
@@ -102,7 +102,20 @@ document.addEventListener('keyup', function(e) {
 
 setInterval(function(){
     
-    if(pause) {return;}
+    if(pause) 
+    {
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "yellow";
+        drawPauseText();
+        return;
+    }
+    
+    else //TODO: Fix erasing of pause text
+    {
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "yelow";
+        drawPauseText();
+    }
     
     //update ball bounds
     ballLowBound = ballYPos + ballRadius;
@@ -142,14 +155,11 @@ setInterval(function(){
     
     //collision TOP/BOTOOM
     if(ballUpBound <= 0 || ballLowBound >= canvas.height) //TODO: Cases for which part of the ball collides so it applies to all sides.
-    {
-        //ballCollision = true;
-        
-        //window.alert("Yo");
-        
+    {        
         drawBlackBall();
         
         ballIncreaseInY = -ballIncreaseInY;
+        
         if(ballUpBound <= 0)
             ballYPos = 0 + ballRadius + 1;
         else if(ballLowBound >= 320)
@@ -157,7 +167,6 @@ setInterval(function(){
         
         //Redraw white ball so there isnt a super short dark out
         drawWhiteBall();
-        
     }
     
     //left bar collision
@@ -170,7 +179,7 @@ setInterval(function(){
             ctx.strokeStyle = "white";
             drawLeftBar();
             
-            ballIncreaseInX = -ballIncreaseInX * 1.06;
+            ballIncreaseInX = -ballIncreaseInX * 1.04;
             
             ballXPos = leftBarXPos + barWidth + ballRadius + 1;
             drawWhiteBall();    
@@ -192,7 +201,7 @@ setInterval(function(){
             ctx.strokeStyle = "white";
             drawRightBar();
             
-            ballIncreaseInX = -ballIncreaseInX * 1.06;
+            ballIncreaseInX = -ballIncreaseInX * 1.04;
             
             ballXPos = rightBarXPos - ballRadius - 1;
             drawWhiteBall();    
@@ -227,13 +236,13 @@ function moveLeftBarUp() //TODO: Fix lines remaining after movement of bars
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     drawLeftBar();
-    ctx.stroke();
+    //ctx.stroke();
     
     leftBarYPos -= barIncreaseInY;
     
     ctx.fillStyle = "white";
     drawLeftBar();
-    ctx.stroke();
+    //ctx.stroke();
     if(leftBarYPos < 0)
     {
         leftReachedTop = true;
@@ -251,13 +260,14 @@ function moveLeftBarDown()
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     drawLeftBar();
-    ctx.stroke();
+    //ctx.stroke();
     
     leftBarYPos += barIncreaseInY;
     
+    ctx.strokeStyle = "black";
     ctx.fillStyle = "white";
     drawLeftBar();
-    ctx.stroke();
+    //ctx.stroke();
     if(leftBarYPos > canvas.height - barHeight)
     {
         leftReachedBottom = true;
@@ -277,14 +287,14 @@ function moveRightBarUp()
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     drawRightBar();
-    ctx.stroke();
+    //ctx.stroke();
     //ctx.closePath();
         
     rightBarYPos -= barIncreaseInY;
     
     ctx.fillStyle = "white";
     drawRightBar();
-    ctx.stroke();
+    //ctx.stroke();
     if(rightBarYPos < 0)
     {
         rightReachedTop = true;
@@ -304,14 +314,14 @@ function moveRightBarDown()
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     drawRightBar();
-    ctx.stroke();
+    //ctx.stroke();
     //ctx.closePath();
         
     rightBarYPos += barIncreaseInY;
     
     ctx.fillStyle = "white";
     drawRightBar();
-    ctx.stroke();
+    //sctx.stroke();
     if(rightBarYPos > canvas.height - barHeight)
     {
         rightReachedBottom = true;
@@ -386,6 +396,11 @@ function drawRightBar()
 
 //TODO: Add "Pause" text to game
 
+function drawPauseText()
+{
+    ctx.font = "30px Arial";
+    ctx.fillText("Pause",canvas.width/2 - 45 ,canvas.height/2 - 20);
+}
 
 
 

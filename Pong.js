@@ -1,21 +1,26 @@
+//canvas
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+var pause = false;
 ctx.fillStyle = "white";
 ctx.strokeStyle = "black";
 
-//var leftBarXPos = 10;
-var leftBarYPos = 130;
-//var rightBarXPos = 460;
-var rightBarYPos = 130;
+//both bars
+var barWidth = 10;
+var barHeight = 60;
 
 //left bar
 var leftReachedTop = false; 
 var leftReachedBottom = false;
+var leftBarXPos = 10;
+var leftBarYPos = 130;
 var leftMoveVal = 0;
 
 //right bar
 var rightReachedTop = false; 
 var rightReachedBottom = false;
+var rightBarXPos = 460;
+var rightBarYPos = 130;
 var rightMoveVal = 0;
 
 //ball
@@ -29,12 +34,12 @@ var ballRightBound = ballXPos + ballRadius;
 var ballCollision = false;
 
 //ball position increments
-var increaseInX = .5;
+var increaseInX = 1;
 var increaseInY = 10;
 
 //width: 480, height: 320
-ctx.fillRect(10, leftBarYPos, 10, 60); //left bar
-ctx.fillRect(460, rightBarYPos, 10, 60); //right bar
+ctx.fillRect(leftBarXPos, leftBarYPos, barWidth, barHeight); //left bar
+ctx.fillRect(rightBarXPos, rightBarYPos, barWidth, barHeight); //right bar
 ctx.arc(ballXPos,ballYPos,ballRadius,0,2*Math.PI); //ball
 ctx.fill(); //fill inside
 ctx.stroke(); //color the border
@@ -44,9 +49,9 @@ ctx.stroke(); //color the border
 document.addEventListener('keydown', function(e) {
     // 'e' short for 'event'
     switch(e.keyCode) {
-//        case 32:
-//            pause = !pause;
-//            break;
+        case 32:
+            pause = !pause;
+            break;
         case 38: //up
             rightMoveVal = 1;
             break;
@@ -96,6 +101,8 @@ document.addEventListener('keyup', function(e) {
 
 setInterval(function(){
     
+    if(pause) {return;}
+    
     //update ball bounds
     ballLowBound = ballYPos + ballRadius;
     ballUpBound = ballYPos - ballRadius;
@@ -137,13 +144,7 @@ setInterval(function(){
         
         //window.alert("Yo");
         
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
-        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
-        ctx.fill();
-        ctx.stroke();
-        ctx.closePath();
+        drawBlackBall();
         
         increaseInY = -increaseInY;
         if(ballUpBound <= 0)
@@ -152,13 +153,7 @@ setInterval(function(){
             ballYPos = canvas.height - ballRadius - 1; 
         
         //Redraw white ball so there isnt a super short dark out
-        ctx.beginPath();
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "black";
-        ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
-        ctx.fill();
-        ctx.stroke();
-        ctx.closePath();
+        drawWhiteBall();
         
     }
     
@@ -183,6 +178,7 @@ function moveLeftBarUp()
 {
     leftReachedBottom = false;
     ctx.fillStyle = "black";
+    ctx.strokeStyle = "black";
     ctx.fillRect(10, leftBarYPos, 10, 60);
     leftBarYPos -= 4;
     ctx.fillStyle = "white";
@@ -202,6 +198,7 @@ function moveLeftBarDown()
 {
     leftReachedTop = false;
     ctx.fillStyle = "black";
+    ctx.strokeStyle = "black";
     ctx.fillRect(10, leftBarYPos, 10, 60);
     leftBarYPos += 4;
     ctx.fillStyle = "white";
@@ -220,12 +217,16 @@ function moveLeftBarDown()
 function moveRightBarUp()
 {
     rightReachedBottom = false;
+    
+    ctx.beginPath();
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     ctx.fillRect(460, rightBarYPos, 10, 60);
     ctx.stroke();
+    ctx.closePath();
         
     rightBarYPos -= 4;
+    
     ctx.fillStyle = "white";
     ctx.fillRect(460, rightBarYPos, 10, 60);
     ctx.stroke();
@@ -243,12 +244,16 @@ function moveRightBarUp()
 function moveRightBarDown()
 {
     rightReachedTop = false;
+    
+    ctx.beginPath();
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     ctx.fillRect(460, rightBarYPos, 10, 60);
     ctx.stroke();
+    ctx.closePath();
         
     rightBarYPos += 4;
+    
     ctx.fillStyle = "white";
     ctx.fillRect(460, rightBarYPos, 10, 60);
     ctx.stroke();
@@ -265,25 +270,46 @@ function moveRightBarDown()
 
 function moveBall()
 {
+    drawBlackBall();
+
+    ballXPos += increaseInX;
+    ballYPos += increaseInY;
+    
+    drawWhiteBall();
+}
+
+
+
+
+
+
+function drawBlackBall()
+{
     ctx.beginPath();
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
     ctx.fill();
     ctx.stroke();
-    ctx.closePath();    
+    ctx.closePath();  
+}
+  
 
+
+
+
+
+function drawWhiteBall()
+{
     ctx.beginPath();
-    ballXPos += increaseInX;
-    ballYPos += increaseInY;
     ctx.fillStyle = "white";
     ctx.strokeStyle = "black";
     ctx.arc(ballXPos, ballYPos, ballRadius, 0, 2*Math.PI);
     ctx.fill();
     ctx.stroke();
-    ctx.closePath();
+    ctx.closePath();    
 }
-   
+
 
 
 

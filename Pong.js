@@ -35,7 +35,7 @@ var ballRightBound = ballXPos + ballRadius;
 var ballCollision = false;
 
 //ball position increments
-var ballIncreaseInX = 0;
+var ballIncreaseInX = -2;
 var ballIncreaseInY = 3;
 
 //width: 480, height: 320
